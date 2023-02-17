@@ -28,7 +28,7 @@ def get_cities_by_state(state_id):
 @swag_from('swagger_spec/get_city.yml')
 def get_city(city_id):
     """Retrieves a City object"""
-    city_obj = storage.get(City, city_id)
+    city_obj = storage.get("City", city_id)
     if city_obj is None:
         abort(404)
     return jsonify(city_obj.to_dict())
@@ -44,7 +44,7 @@ def create_city(state_id):
         return make_response(jsonify({'error': 'Not a JSON'}), 400)
     if 'name' not in data:
         return make_response(jsonify({'error': 'Missing name'}), 400)
-    state_obj = storage.get(State, state_id)
+    state_obj = storage.get("State", state_id)
     if state_obj is None:
         abort(404)
     new_obj = City()
@@ -61,7 +61,7 @@ def create_city(state_id):
 @swag_from('swagger_spec/delete_city.yml')
 def delete_city(city_id):
     """Deletes a City object"""
-    city_obj = storage.get(City, city_id)
+    city_obj = storage.get("City", city_id)
     if city_obj is None:
         abort(404)
     city_obj.delete()
@@ -73,7 +73,7 @@ def delete_city(city_id):
 @swag_from('swagger_spec/update_city.yml')
 def update_city(city_id):
     """Updates a City object"""
-    city_obj = storage.get(City, city_id)
+    city_obj = storage.get("City", city_id)
     if city_obj is None:
         abort(404)
     data = request.get_json()
