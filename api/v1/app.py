@@ -3,7 +3,7 @@
 
 
 import os
-from flask import Flask
+from flask import Flask, jsonify, make_response
 from models import storage
 from api.v1.views import app_views
 
@@ -19,6 +19,10 @@ def teardown_db(exception):
     (i.e. .remove()) on the current SQLAlchemy Session"""
     storage.close()
 
+@app.errorhandler(404)
+def page_not_found(error):
+    response = { "error" : "Not found"}
+    return make_response(jsonify(response))
 
 if __name__ == "__main__":
     host = os.getenv('HBNB_API_HOST', '0.0.0.0')
