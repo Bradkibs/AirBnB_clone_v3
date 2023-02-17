@@ -19,9 +19,10 @@ def teardown_db(exception):
     (i.e. .remove()) on the current SQLAlchemy Session"""
     storage.close()
 
+
 @app.errorhandler(404)
 def page_not_found(error):
-    response = { "error" : "Not found"}
+    response = {"error": "Not found"}
     return make_response(jsonify(response), 404)
 
 if __name__ == "__main__":
