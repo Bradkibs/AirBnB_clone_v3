@@ -5,9 +5,11 @@ Flask route that returns json status response
 from api.v1.views import app_views
 from flask import jsonify, request
 from models import storage
+from flasgger import swag_from
 
 
 @app_views.route('/status', methods=['GET'])
+@swag_from('swagger_spec/status.yml')
 def status():
     """
     function for status route that returns the status
@@ -18,6 +20,7 @@ def status():
 
 
 @app_views.route('/stats', methods=['GET'])
+@swag_from('swagger_spec/stats.yml')
 def stats():
     """
     function to return the count of all class objects
