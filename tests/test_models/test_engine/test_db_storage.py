@@ -114,3 +114,60 @@ class TestDBStorage(unittest.TestCase):
         new_user.save()
         self.assertEqual(models.storage.count("State"), initial_count + 1)
         self.assertEqual(models.storage.count(), initial_count + 2)
+
+class TestStorageMethods(unittest.TestCase):
+
+    def setUp(self):
+        """Set up test objects"""
+        self.bm = BaseModel()
+        self.user = User()
+        self.bm.save()
+        self.user.save()
+
+    def tearDown(self):
+        """Remove test objects"""
+        storage.delete(self.bm)
+        storage.delete(self.user)
+
+    def test_db_storage_get(self):
+        """Test DBStorage get method"""
+        obj = storage.get(BaseModel, self.bm.id)
+        self.assertEqual(obj, self.bm)
+        obj = storage.get(User, self.user.id)
+        self.assertEqual(obj, self.user)
+        obj = storage.get(BaseModel, "invalid_id")
+        self.assertIsNone(obj)
+
+    def test_db_storage_count(self):
+        """Test DBStorage count method"""
+        count = storage.count()
+        self.assertEqual(count, 2)
+        count = storage.count(BaseModel)
+        self.assertEqual(count, 1)
+        count = storage.count(User)
+        self.assertEqual(count, 1)
+        count = storage.count("invalid_cls")
+        self.assertEqual(count, 0)
+
+    def test_file_storage_get(self):
+        """Test FileStorage get method"""
+        storage.reload()
+        obj = storage.get(BaseModel, self.bm.id)
+        self.assertEqual(obj, self.bm)
+        obj = storage.get(User, self.user.id)
+        self.assertEqual(obj, self.user)
+        obj = storage.get(BaseModel, "invalid_id")
+        self.assertIsNone(obj)
+
+    def test_file_storage_count(self):
+        """Test FileStorage count method"""
+        storage.reload()
+        count = storage.count()
+        self.assertEqual(count, 2)
+        count = storage.count(BaseModel)
+        self.assertEqual(count, 1)
+        count = storage.count(User)
+        self.assertEqual(count, 1)
+        count = storage.count("invalid_cls")
+        self.assertEqual(count, 0)
+
